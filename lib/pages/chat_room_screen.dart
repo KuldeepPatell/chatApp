@@ -35,7 +35,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       MessageModel newMessage = MessageModel(
           messageid: uuid.v1(),
           sender: widget.userModel.uid,
-          createdon: DateTime.now(),
+          createdon: Timestamp.now(),
           text: msg,
           seen: false);
       FirebaseFirestore.instance
@@ -93,6 +93,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                           reverse: true,
                           itemCount: dataSnapshot.docs.length,
                           itemBuilder: (context, index) {
+                            // print(
+                            //     "--------dataSnapshot ${dataSnapshot.docs[0].data()}");
                             MessageModel currentMessage = MessageModel.fromMap(
                                 dataSnapshot.docs[index].data()
                                     as Map<String, dynamic>);

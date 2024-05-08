@@ -1,3 +1,4 @@
+import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/pages/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,9 +24,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String cpassword = cpasswordController.text.trim();
 
     if (email == "" || password == "" || cpassword == "") {
-      print("Please fill all the fields!");
+      // print("Please fill all the fields!");
+      UIHelper.showAlertDialog(
+          context, "Incomplete Data", "Please fill all the fields");
     } else if (password != cpassword) {
-      print("Password do not match!");
+      // print("Password do not match!");
+      UIHelper.showAlertDialog(context, "Password Mismatch",
+          "The password you entered do not match!");
     } else {
       signUp(email, password);
     }
@@ -33,11 +38,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void signUp(String email, String password) async {
     UserCredential? credential;
+    UIHelper.showLoadingDialog(context, "Creating new account...");
     try {
       credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (ex) {
-      print(ex.code.toString());
+      Navigator.pop(context);
+      UIHelper.showAlertDialog(
+          context, "An error occured", ex.message.toString());
+      // print(ex.code.toString());
     }
 
     if (credential != null) {
@@ -50,7 +59,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           .set(newUser.toMap())
           .then((value) {
         print("New user created!");
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
+        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
           return ProfileScreen(
               userModel: newUser, firebaseUser: credential!.user!);
         }));

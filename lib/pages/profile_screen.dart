@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/pages/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -102,14 +103,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String fullname = fullNameController.text.trim();
 
     if (fullname == "" || imageFile == null) {
-      print("Please fill all the fields");
+      // print("Please fill all the fields");
+      UIHelper.showAlertDialog(
+          context, "Incomplete Data", "Please fill all the fields");
     } else {
       uploadData();
-      log("uploading data...");
+      // log("uploading data...");
     }
   }
 
   void uploadData() async {
+    UIHelper.showLoadingDialog(context, "Please wait...!");
     UploadTask uploadTask = FirebaseStorage.instance
         .ref("profilepictures")
         .child(widget.userModel.uid.toString())

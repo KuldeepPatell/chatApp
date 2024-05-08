@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class MessageModel {
   String? messageid;
   String? sender;
   String? text;
   bool? seen;
-  DateTime? createdon;
+  Timestamp? createdon;
 
   MessageModel(
       {this.messageid, this.sender, this.text, this.seen, this.createdon});
@@ -11,7 +13,7 @@ class MessageModel {
   MessageModel.fromMap(Map<String, dynamic> map) {
     messageid = map["messageid"];
     sender = map["sender"];
-    text = map["map"];
+    text = map["text"];
     seen = map["seen"];
     createdon = map["createdon"];
   }

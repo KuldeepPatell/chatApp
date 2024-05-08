@@ -38,12 +38,15 @@ class _SearchScreenState extends State<SearchScreen> {
     } else {
       // Create a new one
       ChatRoomModel newChatroom = ChatRoomModel(
-          chatroomid: uuid.v1(),
-          lastMessage: "",
-          participants: {
-            widget.userModel.uid.toString(): true,
-            targetUser.uid.toString(): true
-          });
+        chatroomid: uuid.v1(),
+        lastMessage: "",
+        participants: {
+          widget.userModel.uid.toString(): true,
+          targetUser.uid.toString(): true
+        },
+        users: [widget.userModel.uid.toString(), targetUser.uid.toString()],
+        createdon: Timestamp.now(),
+      );
       await FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(newChatroom.chatroomid)
