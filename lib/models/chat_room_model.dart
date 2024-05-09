@@ -6,13 +6,15 @@ class ChatRoomModel {
   String? lastMessage;
   List<dynamic>? users;
   Timestamp? createdon;
+  Timestamp? lastmessageon;
 
   ChatRoomModel(
       {this.chatroomid,
       this.participants,
       this.lastMessage,
       this.users,
-      this.createdon});
+      this.createdon,
+      this.lastmessageon});
 
   ChatRoomModel.fromMap(Map<String, dynamic> map) {
     chatroomid = map["chatroomid"];
@@ -20,6 +22,7 @@ class ChatRoomModel {
     lastMessage = map["lastmessage"];
     users = map["users"];
     createdon = map["createdon"];
+    lastmessageon = map["lastmessageon"];
   }
 
   Map<String, dynamic> toMap() {
@@ -28,7 +31,8 @@ class ChatRoomModel {
       "participants": participants,
       "lastmessage": lastMessage,
       "users": users,
-      "createdon": createdon
+      "createdon": createdon,
+      "lastmessageon": lastmessageon
     };
   }
 }

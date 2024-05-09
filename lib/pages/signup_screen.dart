@@ -17,6 +17,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController cpasswordController = TextEditingController();
+  bool show = true;
+  bool show2 = true;
 
   void checkValues() {
     String email = emailController.text.trim();
@@ -25,12 +27,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (email == "" || password == "" || cpassword == "") {
       // print("Please fill all the fields!");
-      UIHelper.showAlertDialog(
-          context, "Incomplete Data", "Please fill all the fields");
+      // UIHelper.showAlertDialog(
+      //     context, "Incomplete Data", "Please fill all the fields");
+      UIHelper.showSnackbar(context, "Please fill all the fields");
     } else if (password != cpassword) {
       // print("Password do not match!");
-      UIHelper.showAlertDialog(context, "Password Mismatch",
-          "The password you entered do not match!");
+      // UIHelper.showAlertDialog(context, "Password Mismatch",
+      //     "The password you entered do not match!");
+      UIHelper.showSnackbar(context, "The password you entered do not match!");
     } else {
       signUp(email, password);
     }
@@ -44,8 +48,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (ex) {
       Navigator.pop(context);
-      UIHelper.showAlertDialog(
-          context, "An error occured", ex.message.toString());
+      // UIHelper.showAlertDialog(
+      //     context, "An error occured", ex.message.toString());
+      UIHelper.showSnackbar(context, ex.message.toString());
       // print(ex.code.toString());
     }
 
@@ -91,23 +96,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 TextField(
                   controller: emailController,
-                  decoration: InputDecoration(labelText: "Email Address"),
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Colors.grey,
+                      ),
+                      labelText: "Email Address"),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 TextField(
                   controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(labelText: "Password"),
+                  obscureText: show,
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: Colors.grey,
+                      ),
+                      labelText: "Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          show ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            show = !show;
+                          });
+                        },
+                      )),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 TextField(
                   controller: cpasswordController,
-                  obscureText: true,
-                  decoration: InputDecoration(labelText: "Confirm Password"),
+                  obscureText: show2,
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: Colors.grey,
+                      ),
+                      labelText: "Confirm Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          show2 ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            show2 = !show2;
+                          });
+                        },
+                      )),
                 ),
                 SizedBox(
                   height: 20,

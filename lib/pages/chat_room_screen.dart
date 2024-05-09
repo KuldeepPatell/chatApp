@@ -27,6 +27,7 @@ class ChatRoomScreen extends StatefulWidget {
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
   TextEditingController messageController = TextEditingController();
+
   void sendMessage() async {
     String msg = messageController.text.trim();
     messageController.clear();
@@ -46,6 +47,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           .set(newMessage.toMap());
 
       widget.chatroom.lastMessage = msg;
+      widget.chatroom.lastmessageon = Timestamp.now();
       FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(widget.chatroom.chatroomid)
@@ -98,26 +100,73 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                             MessageModel currentMessage = MessageModel.fromMap(
                                 dataSnapshot.docs[index].data()
                                     as Map<String, dynamic>);
-                            return Row(
-                              mainAxisAlignment: (currentMessage.sender ==
+
+                            DateTime dateTime =
+                                currentMessage.createdon!.toDate();
+
+                            String formattedTime =
+                                '${(dateTime.hour > 12) ? dateTime.hour - 12 : dateTime.hour}:${dateTime.minute}';
+
+                            return Column(
+                              crossAxisAlignment: (currentMessage.sender ==
                                       widget.userModel.uid)
-                                  ? MainAxisAlignment.end
-                                  : MainAxisAlignment.start,
+                                  ? CrossAxisAlignment.end
+                                  : CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                    margin: EdgeInsets.symmetric(vertical: 2),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 10),
-                                    decoration: BoxDecoration(
-                                        color: (currentMessage.sender ==
-                                                widget.userModel.uid)
-                                            ? Colors.grey
-                                            : Colors.blue,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: Text(
-                                      currentMessage.text.toString(),
-                                      style: TextStyle(color: Colors.white),
-                                    )),
+                                Row(
+                                  mainAxisAlignment: (currentMessage.sender ==
+                                          widget.userModel.uid)
+                                      ? MainAxisAlignment.end
+                                      : MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  // mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 2),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                            color: (currentMessage.sender ==
+                                                    widget.userModel.uid)
+                                                ? Colors.grey
+                                                : Colors.blue,
+                                            borderRadius:
+                                                // BorderRadius.circular(5)
+                                                (currentMessage.sender ==
+                                                        widget.userModel.uid)
+                                                    ? BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(10),
+                                                        topRight:
+                                                            Radius.circular(10),
+                                                        bottomLeft:
+                                                            Radius.circular(10))
+                                                    : BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(10),
+                                                        topLeft:
+                                                            Radius.circular(10),
+                                                        bottomRight:
+                                                            Radius.circular(
+                                                                10))),
+                                        child: Text(
+                                          currentMessage.text.toString(),
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                                    // (currentMessage.sender ==
+                                    //         widget.userModel.uid)
+                                    //     ? Text(
+                                    //         "00:00 pm",
+                                    //         style: TextStyle(fontSize: 10),
+                                    //       )
+                                    //     : Text("")
+                                  ],
+                                ),
+                                Text(
+                                  "${formattedTime}${(dateTime.hour > 12) ? " pm" : " am"}",
+                                  style: TextStyle(fontSize: 9),
+                                )
                               ],
                             );
                           });

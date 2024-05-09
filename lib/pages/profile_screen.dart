@@ -104,8 +104,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (fullname == "" || imageFile == null) {
       // print("Please fill all the fields");
-      UIHelper.showAlertDialog(
-          context, "Incomplete Data", "Please fill all the fields");
+      // UIHelper.showAlertDialog(
+      //     context, "Incomplete Data", "Please fill all the fields");
+      UIHelper.showSnackbar(context, "Please fill all the fields");
     } else {
       uploadData();
       // log("uploading data...");

@@ -17,14 +17,17 @@ class LogInScreen extends StatefulWidget {
 class _LogInScreenState extends State<LogInScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool show = true;
 
   void checkValues() {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
     if (email == "" || password == "") {
-      UIHelper.showAlertDialog(
-          context, "Incomplete Data", "Please fill all the fields");
+      // UIHelper.showAlertDialog(
+      //     context, "Incomplete Data", "Please fill all the fields");
+      UIHelper.showSnackbar(context, "Please fill all the fields");
+      // setState(() {});
       // print("Please fill all the fields!");
     } else {
       logIn(email, password);
@@ -39,7 +42,12 @@ class _LogInScreenState extends State<LogInScreen> {
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (ex) {
       Navigator.pop(context);
-      UIHelper.showAlertDialog(context, "An error occured", ex.code.toString());
+      if (ex.code == "invalid-credential") {
+        // UIHelper.showAlertDialog(context, "An error occured", "No User Found for that Email");
+        UIHelper.showSnackbar(context, "Invalid User or Password");
+      } else {
+        UIHelper.showSnackbar(context, ex.code.toString());
+      }
       // print(ex.message.toString());
     }
 
@@ -80,18 +88,54 @@ class _LogInScreenState extends State<LogInScreen> {
                 ),
                 TextField(
                   controller: emailController,
-                  decoration: InputDecoration(labelText: "Email Address"),
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Colors.grey,
+                      ),
+                      labelText: "Email Address"),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 TextField(
                   controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(labelText: "Password"),
+                  obscureText: show,
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: Colors.grey,
+                      ),
+                      labelText: "Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          show ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            show = !show;
+                          });
+                        },
+                      )),
                 ),
                 SizedBox(
                   height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {},
+                      child: Text(
+                        "Forget Password?",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
                 ),
                 CupertinoButton(
                   child: Text("Log In"),

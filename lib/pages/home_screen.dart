@@ -47,7 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   // "participants.${widget.userModel.uid}", isEqualTo: true
                   "users",
                   arrayContains: widget.userModel.uid)
-              .orderBy("createdon", descending: true)
+              .orderBy("lastmessageon", descending: true)
+              // .where("chatrooms", arrayContains: widget.userModel.uid)
+              // .orderBy("createdon", descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
@@ -59,8 +61,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ChatRoomModel chatRoomModel = ChatRoomModel.fromMap(
                         chatRoomSnapshot.docs[index].data()
                             as Map<String, dynamic>);
+
                     Map<String, dynamic> participants =
                         chatRoomModel.participants!;
+
+                    DateTime dateTime = chatRoomModel.lastmessageon!.toDate();
+                    String formattedDate =
+                        '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+
+                    DateTime now = DateTime.now();
+                    Duration difference = now.difference(dateTime);
 
                     List<String> participantKeys = participants.keys.toList();
                     participantKeys.remove(widget.userModel.uid);
@@ -73,33 +83,52 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (userData.data != null) {
                               UserModel targetUser = userData.data as UserModel;
                               return ListTile(
-                                onTap: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return ChatRoomScreen(
-                                        targetUser: targetUser,
-                                        chatroom: chatRoomModel,
-                                        userModel: widget.userModel,
-                                        firebaseUser: widget.firebaseUser);
-                                  }));
-                                },
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      targetUser.profilepic.toString()),
-                                ),
-                                title: Text(targetUser.fullname.toString()),
-                                subtitle: (chatRoomModel.lastMessage
-                                            .toString() !=
-                                        "")
-                                    ? Text(chatRoomModel.lastMessage.toString())
-                                    : Text(
-                                        "Say hi to your new friend!",
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary),
-                                      ),
-                              );
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ChatRoomScreen(
+                                          targetUser: targetUser,
+                                          chatroom: chatRoomModel,
+                                          userModel: widget.userModel,
+                                          firebaseUser: widget.firebaseUser);
+                                    }));
+                                  },
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        targetUser.profilepic.toString()),
+                                  ),
+                                  title: Text(targetUser.fullname.toString()),
+                                  subtitle: (chatRoomModel.lastMessage
+                                              .toString() !=
+                                          "")
+                                      ? Text(
+                                          chatRoomModel.lastMessage.toString())
+                                      : Text(
+                                          "Say hi to your new friend!",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary),
+                                        ),
+                                  trailing: (difference.inSeconds < 1)
+                                      ? Text("now")
+                                      : (difference.inSeconds >= 1 &&
+                                              difference.inSeconds < 60)
+                                          ? Text(
+                                              "${difference.inSeconds} seconds")
+                                          : (difference.inMinutes >= 1 &&
+                                                  difference.inMinutes < 60)
+                                              ? Text(
+                                                  "${difference.inMinutes} minutes")
+                                              : (difference.inHours >= 1 &&
+                                                      difference.inHours < 24)
+                                                  ? Text(
+                                                      "${difference.inHours} hours")
+                                                  : (difference.inDays >= 1 &&
+                                                          difference.inDays < 2)
+                                                      ? Text("yesterday")
+                                                      : Text(formattedDate
+                                                          .toString()));
                             } else {
                               return Container();
                             }
