@@ -154,18 +154,14 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                           currentMessage.text.toString(),
                                           style: TextStyle(color: Colors.white),
                                         )),
-                                    // (currentMessage.sender ==
-                                    //         widget.userModel.uid)
-                                    //     ? Text(
-                                    //         "00:00 pm",
-                                    //         style: TextStyle(fontSize: 10),
-                                    //       )
-                                    //     : Text("")
                                   ],
                                 ),
                                 Text(
                                   "${formattedTime}${(dateTime.hour > 12) ? " pm" : " am"}",
                                   style: TextStyle(fontSize: 9),
+                                ),
+                                SizedBox(
+                                  height: 5,
                                 )
                               ],
                             );
