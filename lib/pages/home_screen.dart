@@ -1,6 +1,5 @@
 import 'package:chat_app/models/chat_room_model.dart';
 import 'package:chat_app/models/firebase_helper.dart';
-import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/pages/chat_room_screen.dart';
 import 'package:chat_app/pages/login_screen.dart';
