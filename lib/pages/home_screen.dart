@@ -1,5 +1,6 @@
 import 'package:chat_app/models/chat_room_model.dart';
 import 'package:chat_app/models/firebase_helper.dart';
+import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/pages/chat_room_screen.dart';
 import 'package:chat_app/pages/login_screen.dart';
@@ -28,12 +29,39 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.popUntil(context, (route) => route.isFirst);
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return LogInScreen();
-                }));
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                            title: Text(
+                              'Want to exit',
+                              style: TextStyle(fontSize: 25),
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('No',
+                                      style: TextStyle(fontSize: 20))),
+                              TextButton(
+                                  onPressed: () async {
+                                    await FirebaseAuth.instance.signOut();
+                                    Navigator.popUntil(
+                                        context, (route) => route.isFirst);
+                                    Navigator.pushReplacement(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return LogInScreen();
+                                    }));
+                                  },
+                                  child: Text('Yes',
+                                      style: TextStyle(fontSize: 20))),
+                            ]));
+                // await FirebaseAuth.instance.signOut();
+                // Navigator.popUntil(context, (route) => route.isFirst);
+                // Navigator.pushReplacement(context,
+                //     MaterialPageRoute(builder: (context) {
+                //   return LogInScreen();
+                // }));
               },
               icon: Icon(Icons.exit_to_app))
         ],
