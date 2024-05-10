@@ -89,7 +89,10 @@ class _SearchScreenState extends State<SearchScreen> {
             StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("users")
-                    .where("email", isEqualTo: searchController.text)
+                    // .where("email", isEqualTo: searchController.text)
+                    .where("email",
+                        isGreaterThanOrEqualTo: searchController.text)
+                    .where("email", isLessThan: searchController.text + "z")
                     .where("email", isNotEqualTo: widget.userModel.email)
                     .snapshots(),
                 builder: (context, snapshot) {

@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   final UserModel targetUser;
@@ -27,9 +28,11 @@ class ChatRoomScreen extends StatefulWidget {
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
   TextEditingController messageController = TextEditingController();
+  // bool? status;
 
   void sendMessage() async {
     String msg = messageController.text.trim();
+    // bool? status = widget.chatroom.msgStatus;
     messageController.clear();
     if (msg != "") {
       // Send Message
@@ -48,12 +51,17 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
       widget.chatroom.lastMessage = msg;
       widget.chatroom.lastmessageon = Timestamp.now();
+      // widget.chatroom.msgStatus = false;
       FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(widget.chatroom.chatroomid)
           .set(widget.chatroom.toMap());
       log("Message sent!");
+      // status = true;
+
+      // return true;
     }
+    // return false;
   }
 
   @override
@@ -103,9 +111,19 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
                             DateTime dateTime =
                                 currentMessage.createdon!.toDate();
+                            // String formattedDate =
+                            //     '${dateTime.day}/${dateTime.month}/${dateTime.year}';
 
                             String formattedTime =
                                 '${(dateTime.hour > 12) ? dateTime.hour - 12 : dateTime.hour}:${dateTime.minute}';
+//      -------->   last message time
+                            // DateTime now = DateTime.now();
+                            // Duration difference = now.difference(dateTime);
+                            // // bool? status = widget.chatroom.msgStatus;
+
+                            // // bool isSend = (status!) ? true : false;
+                            // // bool isSend = status!;
+                            // bool isSend = true;
 
                             return Column(
                               crossAxisAlignment: (currentMessage.sender ==
@@ -113,6 +131,32 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                   ? CrossAxisAlignment.end
                                   : CrossAxisAlignment.start,
                               children: [
+                                // (difference.inHours < 24)
+                                //     ? Center(
+                                //         child: Container(
+                                //           child: Row(
+                                //             children: [Text("Today")],
+                                //           ),
+                                //         ),
+                                //       )
+                                //     : (difference.inHours >= 24 &&
+                                //             difference.inDays < 2)
+                                //         ? Center(
+                                //             child: Container(
+                                //               child: Row(
+                                //                 children: [Text("Yesterday")],
+                                //               ),
+                                //             ),
+                                //           )
+                                //         : Center(
+                                //             child: Container(
+                                //               child: Row(
+                                //                 children: [
+                                //                   Text("${formattedDate}")
+                                //                 ],
+                                //               ),
+                                //             ),
+                                //           ),
                                 Row(
                                   mainAxisAlignment: (currentMessage.sender ==
                                           widget.userModel.uid)
@@ -122,10 +166,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                   // mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 2),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: 2,
+                                        ),
+                                        // padding: EdgeInsets.symmetric(
+                                        //     vertical: 2, horizontal: 2),
                                         decoration: BoxDecoration(
                                             color: (currentMessage.sender ==
                                                     widget.userModel.uid)
@@ -150,16 +195,56 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                         bottomRight:
                                                             Radius.circular(
                                                                 10))),
-                                        child: Text(
-                                          currentMessage.text.toString(),
-                                          style: TextStyle(color: Colors.white),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  top: 8,
+                                                  bottom: 8,
+                                                  left: 8,
+                                                  right: 4),
+                                              child: Text(
+                                                currentMessage.text.toString(),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  top: 2,
+                                                  bottom: 3,
+                                                  left: 3,
+                                                  right: 8),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "${formattedTime}${(dateTime.hour > 12) ? " pm" : " am"}",
+                                                    style:
+                                                        TextStyle(fontSize: 10),
+                                                  ),
+                                                  // SizedBox(width: 3),
+                                                  // (currentMessage.sender ==
+                                                  //         widget.userModel.uid)
+                                                  //     ? (isSend)
+                                                  //         ? Icon(
+                                                  //             Icons.done,
+                                                  //             size: 12,
+                                                  //           )
+                                                  //         : Icon(
+                                                  //             Icons.access_time,
+                                                  //             size: 12)
+                                                  //     : SizedBox(),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         )),
                                   ],
                                 ),
-                                Text(
-                                  "${formattedTime}${(dateTime.hour > 12) ? " pm" : " am"}",
-                                  style: TextStyle(fontSize: 9),
-                                ),
+                                // Text(
+                                //   "${formattedTime}${(dateTime.hour > 12) ? " pm" : " am"}",
+                                //   style: TextStyle(fontSize: 9),
+                                // ),
                                 SizedBox(
                                   height: 5,
                                 )

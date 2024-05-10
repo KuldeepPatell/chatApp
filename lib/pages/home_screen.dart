@@ -69,8 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     String formattedDate =
                         '${dateTime.day}/${dateTime.month}/${dateTime.year}';
 
+                    String formattedTime =
+                        '${(dateTime.hour > 12) ? dateTime.hour - 12 : dateTime.hour}:${dateTime.minute}';
+//      -------->   last message time
                     DateTime now = DateTime.now();
                     Duration difference = now.difference(dateTime);
+
+                    // bool msgStatus = chatRoomModel.msgStatus!;
 
                     List<String> participantKeys = participants.keys.toList();
                     participantKeys.remove(widget.userModel.uid);
@@ -84,6 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               UserModel targetUser = userData.data as UserModel;
                               return ListTile(
                                   onTap: () {
+                                    // setState(() {
+                                    //   chatRoomModel.msgStatus = true;
+                                    // });
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
                                       return ChatRoomScreen(
@@ -110,25 +118,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .colorScheme
                                                   .secondary),
                                         ),
-                                  trailing: (difference.inSeconds < 1)
-                                      ? Text("now")
-                                      : (difference.inSeconds >= 1 &&
-                                              difference.inSeconds < 60)
+                                  trailing:
+                                      // (difference.inSeconds < 1)
+                                      //     ? Text("now")
+                                      //     : (difference.inSeconds >= 1 &&
+                                      //             difference.inSeconds < 60)
+                                      //         ? Text(
+                                      //             "${difference.inSeconds} seconds")
+                                      //         : (difference.inMinutes >= 1 &&
+                                      //                 difference.inMinutes < 60)
+                                      //             ? Text(
+                                      //                 "${difference.inMinutes} minutes")
+                                      //             :
+                                      (difference.inHours < 24)
                                           ? Text(
-                                              "${difference.inSeconds} seconds")
-                                          : (difference.inMinutes >= 1 &&
-                                                  difference.inMinutes < 60)
-                                              ? Text(
-                                                  "${difference.inMinutes} minutes")
-                                              : (difference.inHours >= 1 &&
-                                                      difference.inHours < 24)
-                                                  ? Text(
-                                                      "${difference.inHours} hours")
-                                                  : (difference.inDays >= 1 &&
-                                                          difference.inDays < 2)
-                                                      ? Text("yesterday")
-                                                      : Text(formattedDate
-                                                          .toString()));
+                                              "${formattedTime}${(dateTime.hour > 12) ? " pm" : " am"}")
+                                          : (difference.inDays >= 1 &&
+                                                  difference.inDays < 2)
+                                              ? Text("yesterday")
+                                              : Text(formattedDate.toString()));
                             } else {
                               return Container();
                             }
