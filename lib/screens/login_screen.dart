@@ -1,7 +1,8 @@
 import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
-import 'package:chat_app/pages/home_screen.dart';
-import 'package:chat_app/pages/signup_screen.dart';
+import 'package:chat_app/screens/forget_password_screen.dart';
+import 'package:chat_app/screens/home_screen.dart';
+import 'package:chat_app/screens/signup_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -126,9 +127,15 @@ class _LogInScreenState extends State<LogInScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    ForgetPasswordScreen())));
+                      },
                       child: Text(
-                        "Forget Password?",
+                        "Forgot Password?",
                         style: TextStyle(fontSize: 15),
                       ),
                     )

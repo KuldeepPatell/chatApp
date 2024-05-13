@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:chat_app/main.dart';
 import 'package:chat_app/models/chat_room_model.dart';
 import 'package:chat_app/models/user_model.dart';
-import 'package:chat_app/pages/chat_room_screen.dart';
+import 'package:chat_app/screens/chat_room_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

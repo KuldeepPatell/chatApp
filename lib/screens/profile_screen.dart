@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
-import 'package:chat_app/pages/home_screen.dart';
+import 'package:chat_app/screens/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
