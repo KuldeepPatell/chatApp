@@ -2,6 +2,7 @@ import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NavBar extends StatefulWidget {
   final UserModel currentUser;
@@ -37,15 +38,19 @@ class _NavBar extends State<NavBar> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Drawer(
-      width: screenWidth * .6,
+      width: screenWidth * .7,
       child: Center(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(widget.currentUser.fullname.toString()),
-              accountEmail: Text(widget.currentUser.email.toString(),
-                  style: TextStyle(fontSize: 15)),
+              accountName: Text(widget.currentUser.fullname.toString(),
+                  style: TextStyle(fontSize: 15.sp)),
+              accountEmail: Text(
+                  widget.currentUser.email.toString() +
+                      "\n+91 " +
+                      widget.currentUser.mobileNumber.toString(),
+                  style: TextStyle(fontSize: 15.sp)),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.grey,
                 backgroundImage:
@@ -60,7 +65,7 @@ class _NavBar extends State<NavBar> {
                     leading: arrIcons[index],
                     title: Text(
                       "${arrTitle[index]}",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20.sp),
                     ),
                     onTap: () => null,
                   );
@@ -77,7 +82,7 @@ class _NavBar extends State<NavBar> {
                     leading: arrIcons2[index],
                     title: Text(
                       "${arrTitle2[index]}",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20.sp),
                     ),
                     onTap: () => null,
                   );
@@ -90,7 +95,7 @@ class _NavBar extends State<NavBar> {
               leading: Icon(Icons.logout),
               title: Text(
                 'LogOut',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20.sp),
               ),
               onTap: () {
                 showDialog(
@@ -98,14 +103,15 @@ class _NavBar extends State<NavBar> {
                   builder: (context) => AlertDialog(
                       title: Text(
                         'Want to exit',
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 25.sp),
                       ),
                       actions: [
                         TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('No', style: TextStyle(fontSize: 20))),
+                            child:
+                                Text('No', style: TextStyle(fontSize: 20.sp))),
                         TextButton(
                             onPressed: () async {
                               await FirebaseAuth.instance.signOut();
@@ -116,7 +122,8 @@ class _NavBar extends State<NavBar> {
                                 return LogInScreen();
                               }));
                             },
-                            child: Text('Yes', style: TextStyle(fontSize: 20))),
+                            child:
+                                Text('Yes', style: TextStyle(fontSize: 20.sp))),
                       ]),
                 );
               },

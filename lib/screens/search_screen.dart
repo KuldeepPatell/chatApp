@@ -70,9 +70,9 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             TextField(
-              controller: searchController,
-              decoration: InputDecoration(labelText: "Email Address"),
-            ),
+                controller: searchController,
+                decoration: InputDecoration(labelText: "Email Address"),
+                onChanged: (value) => setState(() {})),
             SizedBox(
               height: 20,
             ),

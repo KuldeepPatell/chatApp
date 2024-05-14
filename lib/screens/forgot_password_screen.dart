@@ -2,15 +2,16 @@ import 'package:chat_app/models/ui_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ForgetPasswordScreen extends StatefulWidget {
-  const ForgetPasswordScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
-  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   TextEditingController emailController = TextEditingController();
 
   void checkValues() {
@@ -19,7 +20,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     if (email == "") {
       // UIHelper.showAlertDialog(
       //     context, "Incomplete Data", "Please fill all the fields");
-      UIHelper.showSnackbar(context, "Please fill all the fields");
+      UIHelper.showSnackbar(context, "Please enter the Email");
       // setState(() {});
       // print("Please fill all the fields!");
     } else {
@@ -53,7 +54,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40),
+        padding: EdgeInsets.symmetric(horizontal: 40.w),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -61,12 +62,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 Text(
                   "Chat App",
                   style: TextStyle(
-                      fontSize: 45,
+                      fontSize: 45.sp,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.secondary),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 TextField(
                   controller: emailController,
@@ -78,10 +79,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       labelText: "Email Address"),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 CupertinoButton(
                   child: Text("Reset Password"),

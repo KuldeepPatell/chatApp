@@ -1,12 +1,13 @@
 import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
-import 'package:chat_app/screens/forget_password_screen.dart';
+import 'package:chat_app/screens/forgot_password_screen.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/signup_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -72,7 +73,7 @@ class _LogInScreenState extends State<LogInScreen> {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40),
+        padding: EdgeInsets.symmetric(horizontal: 40.w),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -80,12 +81,12 @@ class _LogInScreenState extends State<LogInScreen> {
                 Text(
                   "Chat App",
                   style: TextStyle(
-                      fontSize: 45,
+                      fontSize: 45.sp,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.secondary),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 TextField(
                   controller: emailController,
@@ -97,7 +98,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       labelText: "Email Address"),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 TextField(
                   controller: passwordController,
@@ -121,7 +122,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       )),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -132,17 +133,17 @@ class _LogInScreenState extends State<LogInScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: ((context) =>
-                                    ForgetPasswordScreen())));
+                                    ForgotPasswordScreen())));
                       },
                       child: Text(
                         "Forgot Password?",
-                        style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15.sp),
                       ),
                     )
                   ],
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 CupertinoButton(
                   child: Text("Log In"),
@@ -162,17 +163,16 @@ class _LogInScreenState extends State<LogInScreen> {
           children: [
             Text(
               "Don`t have an account?",
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16.sp),
             ),
             CupertinoButton(
                 child: Text(
                   "Sign Up",
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16.sp),
                 ),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SignUpScreen()));
-                  print("Log in successful");
                 })
           ],
         ),

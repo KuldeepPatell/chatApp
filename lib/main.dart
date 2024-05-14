@@ -7,6 +7,7 @@ import 'package:chat_app/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
@@ -40,10 +41,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LogInScreen(),
-      // home: ConfirmEmailScreen(),
+    return ScreenUtilInit(
+      builder: (context, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LogInScreen(),
+        // home: ConfirmEmailScreen(),
+      ),
+      designSize: Size(360, 740),
     );
   }
 }
@@ -58,12 +62,15 @@ class MyAppLoggedIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(
-        userModel: userModel,
-        firebaseUser: firebaseUser,
+    return ScreenUtilInit(
+      builder: (context, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeScreen(
+          userModel: userModel,
+          firebaseUser: firebaseUser,
+        ),
       ),
+      designSize: Size(360, 740),
     );
   }
 }

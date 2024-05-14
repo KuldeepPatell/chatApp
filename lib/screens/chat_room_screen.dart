@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   final UserModel targetUser;
@@ -75,7 +76,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               backgroundImage:
                   NetworkImage(widget.targetUser.profilepic.toString()),
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Text(widget.targetUser.fullname.toString()),
           ],
         ),
@@ -86,7 +87,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           children: [
             Expanded(
                 child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("chatrooms")
@@ -167,7 +168,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                   children: [
                                     Container(
                                         margin: EdgeInsets.symmetric(
-                                          vertical: 2,
+                                          vertical: 2.w,
                                         ),
                                         // padding: EdgeInsets.symmetric(
                                         //     vertical: 2, horizontal: 2),
@@ -201,26 +202,26 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                           children: [
                                             Container(
                                               padding: EdgeInsets.only(
-                                                  top: 8,
-                                                  bottom: 8,
-                                                  left: 8,
-                                                  right: 4),
+                                                  top: 8.h,
+                                                  bottom: 8.h,
+                                                  left: 8.w,
+                                                  right: 4.w),
                                               child: Text(
                                                 currentMessage.text.toString(),
                                               ),
                                             ),
                                             Container(
                                               padding: EdgeInsets.only(
-                                                  top: 2,
-                                                  bottom: 3,
-                                                  left: 3,
-                                                  right: 8),
+                                                  top: 2.h,
+                                                  bottom: 3.h,
+                                                  left: 3.w,
+                                                  right: 8.w),
                                               child: Row(
                                                 children: [
                                                   Text(
                                                     "${formattedTime}${(dateTime.hour > 12) ? " pm" : " am"}",
-                                                    style:
-                                                        TextStyle(fontSize: 10),
+                                                    style: TextStyle(
+                                                        fontSize: 10.sp),
                                                   ),
                                                   // SizedBox(width: 3),
                                                   // (currentMessage.sender ==
@@ -246,7 +247,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 //   style: TextStyle(fontSize: 9),
                                 // ),
                                 SizedBox(
-                                  height: 5,
+                                  height: 5.sp,
                                 )
                               ],
                             );
@@ -271,7 +272,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             )),
             Container(
               color: Colors.grey[200],
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
               child: Row(
                 children: [
                   Flexible(

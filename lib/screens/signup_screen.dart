@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -33,8 +34,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String password = passwordController.text.trim();
     String cpassword = cpasswordController.text.trim();
     String number = mobileNumberController.text.trim();
+    String otp = otpController.text.trim();
 
-    if (email == "" || password == "" || cpassword == "" || number == "") {
+    if (email == "" ||
+        password == "" ||
+        cpassword == "" ||
+        number == "" ||
+        otp == "") {
       // print("Please fill all the fields!");
       // UIHelper.showAlertDialog(
       //     context, "Incomplete Data", "Please fill all the fields");
@@ -44,12 +50,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // UIHelper.showAlertDialog(context, "Password Mismatch",
       //     "The password you entered do not match!");
       UIHelper.showSnackbar(context, "The password you entered do not match!");
+    } else if (isButtonEnabled) {
+      signUp(email, password, number);
     } else {
-      signUp(email, password);
+      UIHelper.showSnackbar(context, "OTP not verified");
     }
   }
 
-  void signUp(String email, String password) async {
+  void signUp(String email, String password, String number) async {
     UserCredential? credential;
     UIHelper.showLoadingDialog(context, "Creating new account...");
     try {
@@ -65,8 +73,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (credential != null) {
       String uid = credential.user!.uid;
-      UserModel newUser =
-          UserModel(uid: uid, email: email, fullname: "", profilepic: "");
+      UserModel newUser = UserModel(
+          uid: uid,
+          email: email,
+          mobileNumber: number,
+          fullname: "",
+          profilepic: "");
       await FirebaseFirestore.instance
           .collection("users")
           .doc(uid)
@@ -90,12 +102,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void sendOTP(String phoneNumber) async {
+    UIHelper.showLoadingDialog(context, "Sending OTP");
     // emit(AuthLoadingState());
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       codeSent: (verificationId, forceResendingToken) {
         _verificationId = verificationId;
         // emit(AuthCodeSentState());
+        Navigator.pop(context);
+        UIHelper.showSnackbar(context, "OTP send successfully");
       },
       verificationCompleted: (phoneAuthCredential) {
         // signInWithPhone(phoneAuthCredential);
@@ -104,20 +119,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       verificationFailed: (error) {
         // emit(AuthErrorState(error.message.toString()));
+        Navigator.pop(context);
         UIHelper.showSnackbar(context, "$error");
+        print("$error");
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         _verificationId = verificationId;
       },
     );
+    print("send otp called");
+    // UIHelper.showSnackbar(context, "OTP send successfully");
   }
 
   void verifyOTP(String otp) async {
-    // emit(AuthLoadingState());
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: _verificationId!, smsCode: otp);
+    try {
+      UIHelper.showLoadingDialog(context, "Verifying  OTP");
+      // emit(AuthLoadingState());
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: _verificationId!, smsCode: otp);
 
-    signInWithPhone(credential);
+      signInWithPhone(credential);
+      print("verify otp called");
+    } catch (ex) {
+      Navigator.pop(context);
+      UIHelper.showSnackbar(context, "Invalid OTP");
+    }
   }
 
   void signInWithPhone(PhoneAuthCredential credential) async {
@@ -126,14 +152,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
           await _auth.signInWithCredential(credential);
       if (userCredential.user != null) {
         // emit(AuthLoggedInState(userCredential.user!));
+        setState(() {
+          isButtonEnabled = true;
+        });
+
+        Navigator.pop(context);
+        UIHelper.showSnackbar(context, "Phone number verified successfully");
+        print("Phone number verified successfully");
       }
     } on FirebaseAuthException catch (ex) {
       // emit(AuthErrorState(ex.message.toString()));
+      Navigator.pop(context);
+      UIHelper.showSnackbar(context, "$ex");
+      print("$ex");
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
           child: Container(
@@ -145,12 +182,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Text(
                   "Chat App",
                   style: TextStyle(
-                      fontSize: 45,
+                      fontSize: 45.sp,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.secondary),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 TextField(
                   keyboardType: TextInputType.emailAddress,
@@ -163,7 +200,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: "Email Address"),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 TextField(
                   keyboardType: TextInputType.emailAddress,
@@ -188,7 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       )),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 TextField(
                   keyboardType: TextInputType.emailAddress,
@@ -213,39 +250,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       )),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 325,
-                          child: TextField(
-                            keyboardType: TextInputType.phone,
-                            controller: mobileNumberController,
-                            decoration: InputDecoration(
-                              prefixIcon: const Icon(
-                                Icons.phone,
-                                color: Colors.grey,
+                Center(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: screenWidth * .5,
+                            child: TextField(
+                              keyboardType: TextInputType.phone,
+                              controller: mobileNumberController,
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(
+                                  Icons.phone,
+                                  color: Colors.grey,
+                                ),
+                                labelText: "Mobile Number",
                               ),
-                              labelText: "Mobile Number",
                             ),
                           ),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              String phoneNumber =
-                                  '+91${mobileNumberController.text.trim()}'; // Format the phone number
-                            },
-                            child: Text("Send OTP")),
-                      ],
-                    ),
-                  ],
+                          TextButton(
+                              onPressed: () {
+                                String phoneNumber =
+                                    '+91${mobileNumberController.text.trim()}'; // Format the phone number
+
+                                sendOTP(phoneNumber);
+                              },
+                              child: Text("Send OTP")),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 Column(
                   children: [
@@ -254,7 +295,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 325,
+                            width: screenWidth * .5,
                             child: TextField(
                               controller: otpController,
                               maxLength: 6,
@@ -268,22 +309,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                           TextButton(
-                              onPressed: () {}, child: Text("Verify OTP")),
+                              onPressed: () {
+                                verifyOTP(otpController.text);
+                              },
+                              child: Text("Verify OTP")),
                         ],
                       ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
                 CupertinoButton(
                   child: Text("Sign Up"),
-                  onPressed: isButtonEnabled
-                      ? () {
-                          checkValues();
-                        }
-                      : null,
+                  onPressed: () {
+                    checkValues();
+                  },
                   color: Theme.of(context).colorScheme.secondary,
                 )
               ],
@@ -297,12 +339,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           children: [
             Text(
               "Already have an account?",
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16.sp),
             ),
             CupertinoButton(
                 child: Text(
                   "Log In",
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16.sp),
                 ),
                 onPressed: () {
                   Navigator.pop(context);

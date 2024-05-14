@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -153,11 +154,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: SafeArea(
           child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40),
+        padding: EdgeInsets.symmetric(horizontal: 40.w),
         child: ListView(
           children: [
             SizedBox(
-              height: 20,
+              height: 20.h,
             ),
             CupertinoButton(
               onPressed: () {
@@ -168,19 +169,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: 60,
                 backgroundImage:
                     (imageFile != null) ? MemoryImage(imageFile!) : null,
-                child:
-                    (imageFile == null) ? Icon(Icons.person, size: 60) : null,
+                child: (imageFile == null)
+                    ? Icon(Icons.person, size: 60.sp)
+                    : null,
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 20.h,
             ),
             TextField(
               controller: fullNameController,
               decoration: InputDecoration(labelText: "Full Name"),
             ),
             SizedBox(
-              height: 20,
+              height: 20.h,
             ),
             CupertinoButton(
               child: Text("Submit"),
