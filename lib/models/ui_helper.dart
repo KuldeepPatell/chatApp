@@ -45,10 +45,19 @@ class UIHelper {
   // }
 
   //For calling------> UIHelper.showSnackbar(context, "This is a Snackbar message.");
-  static void showSnackbar(BuildContext context, String message) {
+  static void showSnackbar(BuildContext context, String message, String color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: TextStyle(
+            color: (color == "green")
+                ? Colors.lightGreen
+                : (color == "red")
+                    ? Colors.red
+                    : Colors.white,
+          ),
+        ),
         duration: Duration(seconds: 2), // Adjust the duration as needed
         action: SnackBarAction(label: 'Dismiss', onPressed: () {}),
       ),

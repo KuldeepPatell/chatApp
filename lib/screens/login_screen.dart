@@ -28,7 +28,7 @@ class _LogInScreenState extends State<LogInScreen> {
     if (email == "" || password == "") {
       // UIHelper.showAlertDialog(
       //     context, "Incomplete Data", "Please fill all the fields");
-      UIHelper.showSnackbar(context, "Please fill all the fields");
+      UIHelper.showSnackbar(context, "Please fill all the fields", "white");
       // setState(() {});
       // print("Please fill all the fields!");
     } else {
@@ -46,9 +46,9 @@ class _LogInScreenState extends State<LogInScreen> {
       Navigator.pop(context);
       if (ex.code == "invalid-credential") {
         // UIHelper.showAlertDialog(context, "An error occured", "No User Found for that Email");
-        UIHelper.showSnackbar(context, "Invalid User or Password");
+        UIHelper.showSnackbar(context, "Invalid User or Password", "white");
       } else {
-        UIHelper.showSnackbar(context, ex.code.toString());
+        UIHelper.showSnackbar(context, ex.code.toString(), "red");
       }
       // print(ex.message.toString());
     }

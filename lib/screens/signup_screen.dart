@@ -25,6 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? phoneNumber;
   String? _verificationId;
 
+  bool isTextFieldEnabled = true;
   bool isButtonEnabled = false;
   bool show = true;
   bool show2 = true;
@@ -44,22 +45,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // print("Please fill all the fields!");
       // UIHelper.showAlertDialog(
       //     context, "Incomplete Data", "Please fill all the fields");
-      UIHelper.showSnackbar(context, "Please fill all the fields");
+      UIHelper.showSnackbar(context, "Please fill all the fields", "white");
     } else if (password != cpassword) {
       // print("Password do not match!");
       // UIHelper.showAlertDialog(context, "Password Mismatch",
       //     "The password you entered do not match!");
-      UIHelper.showSnackbar(context, "The password you entered do not match!");
+      UIHelper.showSnackbar(
+          context, "The password you entered do not match!", "white");
     } else if (isButtonEnabled) {
       signUp(email, password, number);
     } else {
-      UIHelper.showSnackbar(context, "OTP not verified");
+      UIHelper.showSnackbar(context, "OTP not verified", "red");
     }
   }
 
   void signUp(String email, String password, String number) async {
     UserCredential? credential;
     UIHelper.showLoadingDialog(context, "Creating new account...");
+
     try {
       credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -67,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Navigator.pop(context);
       // UIHelper.showAlertDialog(
       //     context, "An error occured", ex.message.toString());
-      UIHelper.showSnackbar(context, ex.message.toString());
+      UIHelper.showSnackbar(context, ex.message.toString(), "red");
       // print(ex.code.toString());
     }
 
@@ -110,17 +113,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _verificationId = verificationId;
         // emit(AuthCodeSentState());
         Navigator.pop(context);
-        UIHelper.showSnackbar(context, "OTP send successfully");
+        UIHelper.showSnackbar(context, "OTP send successfully", "white");
       },
       verificationCompleted: (phoneAuthCredential) {
         // signInWithPhone(phoneAuthCredential);
-        UIHelper.showSnackbar(context, "Phone number verified successfully");
+        UIHelper.showSnackbar(
+            context, "Phone number verified successfully", "green");
         onVariableChange(true);
       },
       verificationFailed: (error) {
         // emit(AuthErrorState(error.message.toString()));
         Navigator.pop(context);
-        UIHelper.showSnackbar(context, "$error");
+        UIHelper.showSnackbar(context, "$error", "red");
         print("$error");
       },
       codeAutoRetrievalTimeout: (String verificationId) {
@@ -142,7 +146,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print("verify otp called");
     } catch (ex) {
       Navigator.pop(context);
-      UIHelper.showSnackbar(context, "Invalid OTP");
+      (otp.toString() == "")
+          ? UIHelper.showSnackbar(context, "Please enter  OTP", "white")
+          : UIHelper.showSnackbar(context, "Invalid OTP", "red");
     }
   }
 
@@ -157,13 +163,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
 
         Navigator.pop(context);
-        UIHelper.showSnackbar(context, "Phone number verified successfully");
+        UIHelper.showSnackbar(
+            context, "Phone number verified successfully", "green");
         print("Phone number verified successfully");
       }
     } on FirebaseAuthException catch (ex) {
       // emit(AuthErrorState(ex.message.toString()));
       Navigator.pop(context);
-      UIHelper.showSnackbar(context, "$ex");
+      UIHelper.showSnackbar(context, "$ex", "red");
       print("$ex");
     }
   }
@@ -203,6 +210,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 10.h,
                 ),
                 TextField(
+                  enabled: isTextFieldEnabled,
                   keyboardType: TextInputType.emailAddress,
                   controller: passwordController,
                   obscureText: show,
@@ -228,6 +236,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 10.h,
                 ),
                 TextField(
+                  enabled: isTextFieldEnabled,
                   keyboardType: TextInputType.emailAddress,
                   controller: cpasswordController,
                   obscureText: show2,
@@ -261,6 +270,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           SizedBox(
                             width: screenWidth * .5,
                             child: TextField(
+                              enabled: isTextFieldEnabled,
                               keyboardType: TextInputType.phone,
                               controller: mobileNumberController,
                               decoration: InputDecoration(
@@ -276,8 +286,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onPressed: () {
                                 String phoneNumber =
                                     '+91${mobileNumberController.text.trim()}'; // Format the phone number
-
-                                sendOTP(phoneNumber);
+                                (isTextFieldEnabled && phoneNumber != "+91")
+                                    ? sendOTP(phoneNumber)
+                                    : (!isTextFieldEnabled)
+                                        ? UIHelper.showSnackbar(context,
+                                            "Please verify Email first", "red")
+                                        : (isButtonEnabled &&
+                                                phoneNumber == "+91")
+                                            ? UIHelper.showSnackbar(
+                                                context,
+                                                "Please enter mobile number",
+                                                "white")
+                                            : UIHelper.showSnackbar(
+                                                context,
+                                                "Please enter mobile number",
+                                                "white");
                               },
                               child: Text("Send OTP")),
                         ],
@@ -297,6 +320,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Container(
                             width: screenWidth * .5,
                             child: TextField(
+                              enabled: isTextFieldEnabled,
                               controller: otpController,
                               maxLength: 6,
                               decoration: InputDecoration(
@@ -310,7 +334,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           TextButton(
                               onPressed: () {
-                                verifyOTP(otpController.text);
+                                // verifyOTP(otpController.text);
+                                (isTextFieldEnabled)
+                                    ? verifyOTP(otpController.text)
+                                    : UIHelper.showSnackbar(context,
+                                        "Please verify Email first", "red");
                               },
                               child: Text("Verify OTP")),
                         ],

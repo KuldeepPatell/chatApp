@@ -20,7 +20,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     if (email == "") {
       // UIHelper.showAlertDialog(
       //     context, "Incomplete Data", "Please fill all the fields");
-      UIHelper.showSnackbar(context, "Please enter the Email");
+      UIHelper.showSnackbar(context, "Please enter the Email", "white");
       // setState(() {});
       // print("Please fill all the fields!");
     } else {
@@ -32,13 +32,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       // Password reset email sent successfully
-      UIHelper.showSnackbar(context, 'Password reset email sent successfully');
+      UIHelper.showSnackbar(
+          context, 'Password reset email sent successfully', "white");
       print('Password reset email sent successfully');
       emailController.clear();
     } catch (error) {
       // Handle errors such as invalid email, user not found, etc.
       UIHelper.showSnackbar(
-          context, 'Error sending password reset email: $error');
+          context, 'Error sending password reset email: $error', "red");
       print('Error sending password reset email: $error');
     }
   }
