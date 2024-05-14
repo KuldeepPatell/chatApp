@@ -43,20 +43,53 @@ class _NavBar extends State<NavBar> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
-              accountName: Text(widget.currentUser.fullname.toString(),
-                  style: TextStyle(fontSize: 15.sp)),
-              accountEmail: Text(
-                  widget.currentUser.email.toString() +
-                      "\n+91 " +
-                      widget.currentUser.mobileNumber.toString(),
-                  style: TextStyle(fontSize: 15.sp)),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.grey,
-                backgroundImage:
-                    NetworkImage(widget.currentUser.profilepic.toString()),
+            Container(
+              color: Theme.of(context).colorScheme.secondary,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey,
+                      backgroundImage: NetworkImage(
+                          widget.currentUser.profilepic.toString()),
+                    ),
+                    SizedBox(height: 5.h),
+                    Text(widget.currentUser.fullname.toString(),
+                        style: TextStyle(fontSize: 20.sp, color: Colors.white)),
+                    SizedBox(height: 1.h),
+                    Text(widget.currentUser.email.toString(),
+                        style: TextStyle(fontSize: 17.sp, color: Colors.white)),
+                    Text("+91 " + widget.currentUser.mobileNumber.toString(),
+                        style: TextStyle(fontSize: 15.sp, color: Colors.white)),
+                  ],
+                ),
               ),
             ),
+            // UserAccountsDrawerHeader(
+            //   accountName: Text(widget.currentUser.fullname.toString(),
+            //       style: TextStyle(fontSize: 13.sp)),
+            //   accountEmail: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text(widget.currentUser.email.toString(),
+            //           style: TextStyle(fontSize: 13.sp)),
+            //       Text("+91 " + widget.currentUser.mobileNumber.toString(),
+            //           style: TextStyle(fontSize: 13.sp)),
+            //     ],
+            //   ),
+            //   currentAccountPicture: CircleAvatar(
+            //     backgroundColor: Colors.grey,
+            //     backgroundImage:
+            //         NetworkImage(widget.currentUser.profilepic.toString()),
+            //   ),
+            // ),
             SizedBox(
               height: arrIcons.length * 50,
               child: ListView.builder(
