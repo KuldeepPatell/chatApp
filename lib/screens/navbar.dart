@@ -39,14 +39,14 @@ class _NavBar extends State<NavBar> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Drawer(
       width: screenWidth * .7,
-      child: Center(
+      child: SafeArea(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             Container(
               color: Theme.of(context).colorScheme.secondary,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,14 +91,14 @@ class _NavBar extends State<NavBar> {
             //   ),
             // ),
             SizedBox(
-              height: arrIcons.length * 50,
+              height: arrIcons.length * 60,
               child: ListView.builder(
                 itemBuilder: ((context, index) {
                   return ListTile(
                     leading: arrIcons[index],
                     title: Text(
                       "${arrTitle[index]}",
-                      style: TextStyle(fontSize: 20.sp),
+                      style: TextStyle(fontSize: 18.sp),
                     ),
                     onTap: () => null,
                   );
@@ -115,7 +115,7 @@ class _NavBar extends State<NavBar> {
                     leading: arrIcons2[index],
                     title: Text(
                       "${arrTitle2[index]}",
-                      style: TextStyle(fontSize: 20.sp),
+                      style: TextStyle(fontSize: 18.sp),
                     ),
                     onTap: () => null,
                   );
@@ -128,7 +128,7 @@ class _NavBar extends State<NavBar> {
               leading: Icon(Icons.logout),
               title: Text(
                 'LogOut',
-                style: TextStyle(fontSize: 20.sp),
+                style: TextStyle(fontSize: 18.sp),
               ),
               onTap: () {
                 showDialog(
