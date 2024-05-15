@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UIHelper {
@@ -23,6 +24,21 @@ class UIHelper {
         });
   }
 
+  static void showImageDialog(BuildContext context, String url) {
+    Dialog imageDialog = Dialog(
+      child: Container(
+        height: 250,
+        width: 250,
+        child: Image.network(url),
+      ),
+    );
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return imageDialog;
+        });
+  }
   // static void showAlertDialog(
   //     BuildContext context, String title, String content) {
   //   AlertDialog alertDialog = AlertDialog(

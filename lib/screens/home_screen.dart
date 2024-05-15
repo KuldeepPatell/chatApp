@@ -1,5 +1,6 @@
 import 'package:chat_app/models/chat_room_model.dart';
 import 'package:chat_app/models/firebase_helper.dart';
+import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/screens/chat_room_screen.dart';
 import 'package:chat_app/screens/navbar.dart';
@@ -7,6 +8,7 @@ import 'package:chat_app/screens/search_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatefulWidget {
   final UserModel userModel;
@@ -24,7 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Chat App"),
+        title: Text(
+          "Chat App",
+          style: TextStyle(fontSize: 15.sp),
+        ),
         // actions: [
         //   IconButton(
         //       onPressed: () async {
@@ -129,9 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           firebaseUser: widget.firebaseUser);
                                     }));
                                   },
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        targetUser.profilepic.toString()),
+                                  leading: InkWell(
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          targetUser.profilepic.toString()),
+                                    ),
+                                    onTap: () {
+                                      UIHelper.showImageDialog(context,
+                                          targetUser.profilepic.toString());
+                                    },
                                   ),
                                   title: Text(targetUser.fullname.toString()),
                                   subtitle: (chatRoomModel.lastMessage

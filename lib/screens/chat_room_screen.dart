@@ -220,8 +220,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                 children: [
                                                   Text(
                                                     "${formattedTime}${(dateTime.hour > 12) ? " pm" : " am"}",
-                                                    style: TextStyle(
-                                                        fontSize: 10.sp),
+                                                    style:
+                                                        TextStyle(fontSize: 10),
                                                   ),
                                                   // SizedBox(width: 3),
                                                   // (currentMessage.sender ==
