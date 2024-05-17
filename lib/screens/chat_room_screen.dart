@@ -4,6 +4,7 @@ import 'package:chat_app/main.dart';
 import 'package:chat_app/models/chat_room_model.dart';
 import 'package:chat_app/models/message_model.dart';
 import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/screens/user_detail_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,16 +70,25 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.grey,
-              backgroundImage:
-                  NetworkImage(widget.targetUser.profilepic.toString()),
-            ),
-            SizedBox(width: 10.w),
-            Text(widget.targetUser.fullname.toString()),
-          ],
+        title: InkWell(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => UserDetailScreen(
+                        targetUser: widget.targetUser,
+                        firebaseUser: widget.firebaseUser,
+                      )))),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.grey,
+                backgroundImage:
+                    NetworkImage(widget.targetUser.profilepic.toString()),
+              ),
+              SizedBox(width: 10.w),
+              Text(widget.targetUser.fullname.toString()),
+            ],
+          ),
         ),
       ),
       body: SafeArea(

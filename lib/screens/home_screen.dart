@@ -140,7 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           targetUser.profilepic.toString()),
                                     ),
                                     onTap: () {
-                                      UIHelper.showImageDialog(context,
+                                      UIHelper.showImageDialog(
+                                          context,
+                                          targetUser.fullname.toString(),
                                           targetUser.profilepic.toString());
                                     },
                                   ),

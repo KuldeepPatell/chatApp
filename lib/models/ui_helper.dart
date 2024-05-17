@@ -1,5 +1,7 @@
+import 'package:chat_app/screens/profile_Photo_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UIHelper {
   static void showLoadingDialog(BuildContext context, String title) {
@@ -24,12 +26,60 @@ class UIHelper {
         });
   }
 
-  static void showImageDialog(BuildContext context, String url) {
+  static void showImageDialog(
+      BuildContext context, String userName, String url) {
     Dialog imageDialog = Dialog(
-      child: Container(
-        height: 250,
-        width: 250,
-        child: Image.network(url),
+      child: InkWell(
+        onTap: () {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => ProfilePhotoScreen(
+                        userName: userName,
+                        profileUrl: url,
+                      ))));
+        },
+        child: Stack(children: [
+          // Positioned(
+          //     top: 0.h,
+          //     left: 0.w,
+          //     child: Container(
+          //       color: Colors.black45,
+          //       width: 300.w,
+          //       child: Padding(
+          //         padding:
+          //             EdgeInsets.symmetric(vertical: 5.h, horizontal: 25.w),
+          //         child: Text(
+          //           userName,
+          //           style: TextStyle(fontSize: 20.sp, color: Colors.white),
+          //         ),
+          //       ),
+          //     )),
+          Container(
+            height: 300.h,
+            width: 300.w,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.black,
+                  width: 300.w,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 5.h, horizontal: 25.w),
+                    child: Text(
+                      userName,
+                      style: TextStyle(fontSize: 20.sp, color: Colors.white),
+                    ),
+                  ),
+                ),
+                Image.network(
+                  url,
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
+          ),
+        ]),
       ),
     );
     showDialog(
