@@ -271,16 +271,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SizedBox(
                               width: screenWidth * .5,
                               child: TextField(
+                                maxLength: 10,
                                 enabled: isTextFieldEnabled,
                                 keyboardType: TextInputType.phone,
                                 controller: mobileNumberController,
                                 decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.phone,
-                                    color: Colors.grey,
-                                  ),
-                                  labelText: "Mobile Number",
-                                ),
+                                    prefixIcon: const Icon(
+                                      Icons.phone,
+                                      color: Colors.grey,
+                                    ),
+                                    labelText: "Mobile Number",
+                                    counterText: ""),
                               ),
                             ),
                             TextButton(

@@ -6,30 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// ignore: must_be_immutable
 class NavBar extends StatelessWidget {
   final UserModel currentUser;
   final User firebaseUser;
 
   NavBar({super.key, required this.currentUser, required this.firebaseUser});
-
-  var arrIcons = [
-    Icon(Icons.favorite),
-    Icon(Icons.people),
-    Icon(Icons.share),
-    Icon(Icons.notifications)
-  ];
-
-  var arrIcons2 = [
-    Icon(Icons.settings),
-    Icon(Icons.description),
-  ];
-
-  var arrTitle = ['Favorites', 'Freinds', 'Share', 'Requests'];
-
-  var arrTitle2 = [
-    'Settings',
-    'Policies',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +97,7 @@ class NavBar extends StatelessWidget {
               //     itemCount: arrIcons.length,
               //   ),
               // ),
-              Divider(),
+              // Divider(),
               ListTile(
                 leading: Icon(Icons.person),
                 title: Text("Profile"),
@@ -124,7 +106,7 @@ class NavBar extends StatelessWidget {
                   size: 15.sp,
                 ),
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => CurrentUserDetailScreen(
