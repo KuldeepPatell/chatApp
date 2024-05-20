@@ -178,206 +178,210 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: SafeArea(
-          child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  "Chat App",
-                  style: TextStyle(
-                      fontSize: 45.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: emailController,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: Colors.grey,
-                      ),
-                      labelText: "Email Address"),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextField(
-                  enabled: isTextFieldEnabled,
-                  keyboardType: TextInputType.emailAddress,
-                  controller: passwordController,
-                  obscureText: show,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Colors.grey,
-                      ),
-                      labelText: "Password",
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          show ? Icons.visibility_off : Icons.visibility,
+    return SafeArea(
+      child: Scaffold(
+        body: SafeArea(
+            child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    "Chat App",
+                    style: TextStyle(
+                        fontSize: 45.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailController,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.email,
                           color: Colors.grey,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            show = !show;
-                          });
-                        },
-                      )),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextField(
-                  enabled: isTextFieldEnabled,
-                  keyboardType: TextInputType.emailAddress,
-                  controller: cpasswordController,
-                  obscureText: show2,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Colors.grey,
-                      ),
-                      labelText: "Confirm Password",
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          show2 ? Icons.visibility_off : Icons.visibility,
+                        labelText: "Email Address"),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  TextField(
+                    enabled: isTextFieldEnabled,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: passwordController,
+                    obscureText: show,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.lock,
                           color: Colors.grey,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            show2 = !show2;
-                          });
-                        },
-                      )),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Center(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: screenWidth * .5,
-                            child: TextField(
-                              enabled: isTextFieldEnabled,
-                              keyboardType: TextInputType.phone,
-                              controller: mobileNumberController,
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(
-                                  Icons.phone,
-                                  color: Colors.grey,
+                        labelText: "Password",
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            show ? Icons.visibility_off : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              show = !show;
+                            });
+                          },
+                        )),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  TextField(
+                    enabled: isTextFieldEnabled,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: cpasswordController,
+                    obscureText: show2,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Confirm Password",
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            show2 ? Icons.visibility_off : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              show2 = !show2;
+                            });
+                          },
+                        )),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Center(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: screenWidth * .5,
+                              child: TextField(
+                                enabled: isTextFieldEnabled,
+                                keyboardType: TextInputType.phone,
+                                controller: mobileNumberController,
+                                decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.phone,
+                                    color: Colors.grey,
+                                  ),
+                                  labelText: "Mobile Number",
                                 ),
-                                labelText: "Mobile Number",
                               ),
                             ),
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                String phoneNumber =
-                                    '+91${mobileNumberController.text.trim()}'; // Format the phone number
-                                (isTextFieldEnabled && phoneNumber != "+91")
-                                    ? sendOTP(phoneNumber)
-                                    : (!isTextFieldEnabled)
-                                        ? UIHelper.showSnackbar(context,
-                                            "Please verify Email first", "red")
-                                        : (isButtonEnabled &&
-                                                phoneNumber == "+91")
-                                            ? UIHelper.showSnackbar(
-                                                context,
-                                                "Please enter mobile number",
-                                                "white")
-                                            : UIHelper.showSnackbar(
-                                                context,
-                                                "Please enter mobile number",
-                                                "white");
-                              },
-                              child: Text("Send OTP")),
-                        ],
+                            TextButton(
+                                onPressed: () {
+                                  String phoneNumber =
+                                      '+91${mobileNumberController.text.trim()}'; // Format the phone number
+                                  (isTextFieldEnabled && phoneNumber != "+91")
+                                      ? sendOTP(phoneNumber)
+                                      : (!isTextFieldEnabled)
+                                          ? UIHelper.showSnackbar(
+                                              context,
+                                              "Please verify Email first",
+                                              "red")
+                                          : (isButtonEnabled &&
+                                                  phoneNumber == "+91")
+                                              ? UIHelper.showSnackbar(
+                                                  context,
+                                                  "Please enter mobile number",
+                                                  "white")
+                                              : UIHelper.showSnackbar(
+                                                  context,
+                                                  "Please enter mobile number",
+                                                  "white");
+                                },
+                                child: Text("Send OTP")),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Column(
+                    children: [
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: screenWidth * .5,
+                              child: TextField(
+                                enabled: isTextFieldEnabled,
+                                controller: otpController,
+                                maxLength: 6,
+                                decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                      Icons.password,
+                                      color: Colors.grey,
+                                    ),
+                                    labelText: "6-Digit OTP",
+                                    counterText: ""),
+                              ),
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  // verifyOTP(otpController.text);
+                                  (isTextFieldEnabled)
+                                      ? verifyOTP(otpController.text)
+                                      : UIHelper.showSnackbar(context,
+                                          "Please verify Email first", "red");
+                                },
+                                child: Text("Verify OTP")),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Column(
-                  children: [
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: screenWidth * .5,
-                            child: TextField(
-                              enabled: isTextFieldEnabled,
-                              controller: otpController,
-                              maxLength: 6,
-                              decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.password,
-                                    color: Colors.grey,
-                                  ),
-                                  labelText: "6-Digit OTP",
-                                  counterText: ""),
-                            ),
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                // verifyOTP(otpController.text);
-                                (isTextFieldEnabled)
-                                    ? verifyOTP(otpController.text)
-                                    : UIHelper.showSnackbar(context,
-                                        "Please verify Email first", "red");
-                              },
-                              child: Text("Verify OTP")),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                CupertinoButton(
-                  child: Text("Sign Up"),
-                  onPressed: () {
-                    checkValues();
-                  },
-                  color: Theme.of(context).colorScheme.secondary,
-                )
-              ],
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  CupertinoButton(
+                    child: Text("Sign Up"),
+                    onPressed: () {
+                      checkValues();
+                    },
+                    color: Theme.of(context).colorScheme.secondary,
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      )),
-      bottomNavigationBar: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Already have an account?",
-              style: TextStyle(fontSize: 16.sp),
-            ),
-            CupertinoButton(
-                child: Text(
-                  "Log In",
-                  style: TextStyle(fontSize: 16.sp),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                })
-          ],
+        )),
+        bottomNavigationBar: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Already have an account?",
+                style: TextStyle(fontSize: 16.sp),
+              ),
+              CupertinoButton(
+                  child: Text(
+                    "Log In",
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ],
+          ),
         ),
       ),
     );

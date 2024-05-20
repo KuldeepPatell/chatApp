@@ -52,51 +52,53 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40.w),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  "Chat App",
-                  style: TextStyle(
-                      fontSize: 45.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: Colors.grey,
-                      ),
-                      labelText: "Email Address"),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SizedBox(
-                  height: 40.h,
-                ),
-                CupertinoButton(
-                  child: Text("Reset Password"),
-                  onPressed: () {
-                    checkValues();
-                  },
-                  color: Theme.of(context).colorScheme.secondary,
-                )
-              ],
+    return SafeArea(
+      child: Scaffold(
+        body: SafeArea(
+            child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    "Chat App",
+                    style: TextStyle(
+                        fontSize: 45.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.email,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Email Address"),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  CupertinoButton(
+                    child: Text("Reset Password"),
+                    onPressed: () {
+                      checkValues();
+                    },
+                    color: Theme.of(context).colorScheme.secondary,
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class UserDetailScreen extends StatelessWidget {
-  final UserModel targetUser;
+class CurrentUserDetailScreen extends StatelessWidget {
+  final UserModel currentUser;
   final User firebaseUser;
 
-  const UserDetailScreen(
-      {super.key, required this.targetUser, required this.firebaseUser});
+  const CurrentUserDetailScreen(
+      {super.key, required this.currentUser, required this.firebaseUser});
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +34,28 @@ class UserDetailScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(targetUser.profilepic.toString()),
+              InkWell(
+                onTap: () {
+                  UIHelper.showImageDialog(
+                      context,
+                      currentUser.fullname.toString(),
+                      currentUser.profilepic.toString());
+                },
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.grey,
+                  backgroundImage:
+                      NetworkImage(currentUser.profilepic.toString()),
+                ),
               ),
               SizedBox(height: 3.h),
               Text(
-                targetUser.fullname.toString(),
+                currentUser.fullname.toString(),
                 style: TextStyle(fontSize: 18.sp),
               ),
               SizedBox(height: 2.h),
               Text(
-                "+91 " + targetUser.mobileNumber.toString(),
+                "+91 " + currentUser.mobileNumber.toString(),
                 style: TextStyle(fontSize: 16.sp),
               ),
               SizedBox(height: 1.h),
@@ -89,6 +99,9 @@ class UserDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 10.h,
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 width: double.maxFinite,
@@ -109,7 +122,7 @@ class UserDetailScreen extends StatelessWidget {
                   children: [
                     ListTile(
                       leading: Icon(Icons.email),
-                      title: Text(targetUser.email.toString()),
+                      title: Text(currentUser.email.toString()),
                     ),
                     ListTile(
                       leading: Icon(Icons.cake),

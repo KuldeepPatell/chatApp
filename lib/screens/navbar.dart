@@ -1,21 +1,17 @@
+import 'package:chat_app/models/ui_helper.dart';
 import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/screens/current_user_profile_details.dart';
 import 'package:chat_app/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class NavBar extends StatefulWidget {
+class NavBar extends StatelessWidget {
   final UserModel currentUser;
   final User firebaseUser;
 
-  const NavBar(
-      {super.key, required this.currentUser, required this.firebaseUser});
+  NavBar({super.key, required this.currentUser, required this.firebaseUser});
 
-  @override
-  State<NavBar> createState() => _NavBar();
-}
-
-class _NavBar extends State<NavBar> {
   var arrIcons = [
     Icon(Icons.favorite),
     Icon(Icons.people),
@@ -29,6 +25,7 @@ class _NavBar extends State<NavBar> {
   ];
 
   var arrTitle = ['Favorites', 'Freinds', 'Share', 'Requests'];
+
   var arrTitle2 = [
     'Settings',
     'Policies',
@@ -39,7 +36,7 @@ class _NavBar extends State<NavBar> {
     final screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Drawer(
-        width: screenWidth * .7,
+        width: screenWidth * .6,
         child: SafeArea(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -50,28 +47,36 @@ class _NavBar extends State<NavBar> {
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
                         height: 8.h,
                       ),
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.grey,
-                        backgroundImage: NetworkImage(
-                            widget.currentUser.profilepic.toString()),
+                      InkWell(
+                        onTap: () {
+                          UIHelper.showImageDialog(
+                              context,
+                              currentUser.fullname.toString(),
+                              currentUser.profilepic.toString());
+                        },
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.grey,
+                          backgroundImage:
+                              NetworkImage(currentUser.profilepic.toString()),
+                        ),
                       ),
                       SizedBox(height: 5.h),
-                      Text(widget.currentUser.fullname.toString(),
+                      Text(currentUser.fullname.toString(),
                           style:
                               TextStyle(fontSize: 16.sp, color: Colors.white)),
                       SizedBox(height: 1.h),
-                      Text(widget.currentUser.email.toString(),
-                          style:
-                              TextStyle(fontSize: 14.sp, color: Colors.white)),
-                      Text("+91 " + widget.currentUser.mobileNumber.toString(),
-                          style:
-                              TextStyle(fontSize: 13.sp, color: Colors.white)),
+                      // Text(widget.currentUser.email.toString(),
+                      //     style:
+                      //         TextStyle(fontSize: 14.sp, color: Colors.white)),
+                      // Text("+91 " + widget.currentUser.mobileNumber.toString(),
+                      //     style:
+                      //         TextStyle(fontSize: 13.sp, color: Colors.white)),
                     ],
                   ),
                 ),
@@ -94,45 +99,62 @@ class _NavBar extends State<NavBar> {
               //         NetworkImage(widget.currentUser.profilepic.toString()),
               //   ),
               // ),
-              SizedBox(
-                height: arrIcons.length * 60,
-                child: ListView.builder(
-                  itemBuilder: ((context, index) {
-                    return ListTile(
-                      leading: arrIcons[index],
-                      title: Text(
-                        "${arrTitle[index]}",
-                        style: TextStyle(fontSize: 18.sp),
-                      ),
-                      onTap: () => null,
-                    );
-                  }),
-                  itemCount: arrIcons.length,
-                ),
-              ),
+              // SizedBox(
+              //   height: arrIcons.length * 50,
+              //   child: ListView.builder(
+              //     itemBuilder: ((context, index) {
+              //       return ListTile(
+              //         leading: arrIcons[index],
+              //         title: Text(
+              //           "${arrTitle[index]}",
+              //           style: TextStyle(fontSize: 16.sp),
+              //         ),
+              //         onTap: () => null,
+              //       );
+              //     }),
+              //     itemCount: arrIcons.length,
+              //   ),
+              // ),
               Divider(),
-              SizedBox(
-                height: arrIcons2.length * 50,
-                child: ListView.builder(
-                  itemBuilder: ((context, index) {
-                    return ListTile(
-                      leading: arrIcons2[index],
-                      title: Text(
-                        "${arrTitle2[index]}",
-                        style: TextStyle(fontSize: 18.sp),
-                      ),
-                      onTap: () => null,
-                    );
-                  }),
-                  itemCount: arrIcons2.length,
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text("Profile"),
+                trailing: Icon(
+                  Icons.play_arrow,
+                  size: 15.sp,
                 ),
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CurrentUserDetailScreen(
+                            currentUser: currentUser,
+                            firebaseUser: firebaseUser),
+                      ));
+                },
               ),
+              // SizedBox(
+              //   height: arrIcons2.length * 45,
+              //   child: ListView.builder(
+              //     itemBuilder: ((context, index) {
+              //       return ListTile(
+              //         leading: arrIcons2[index],
+              //         title: Text(
+              //           "${arrTitle2[index]}",
+              //           style: TextStyle(fontSize: 16.sp),
+              //         ),
+              //         onTap: () => null,
+              //       );
+              //     }),
+              //     itemCount: arrIcons2.length,
+              //   ),
+              // ),
               Divider(),
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text(
                   'LogOut',
-                  style: TextStyle(fontSize: 18.sp),
+                  style: TextStyle(fontSize: 16.sp),
                 ),
                 onTap: () {
                   showDialog(
@@ -164,7 +186,12 @@ class _NavBar extends State<NavBar> {
                         ]),
                   );
                 },
+                trailing: Icon(
+                  Icons.play_arrow,
+                  size: 15.sp,
+                ),
               ),
+              Divider(),
             ],
           ),
         ),

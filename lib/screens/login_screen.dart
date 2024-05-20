@@ -70,111 +70,115 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40.w),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  "Chat App",
-                  style: TextStyle(
-                      fontSize: 45.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: Colors.grey,
-                      ),
-                      labelText: "Email Address"),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextField(
-                  controller: passwordController,
-                  obscureText: show,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Colors.grey,
-                      ),
-                      labelText: "Password",
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          show ? Icons.visibility_off : Icons.visibility,
+    return SafeArea(
+      child: Scaffold(
+        body: SafeArea(
+            child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    "Chat App",
+                    style: TextStyle(
+                        fontSize: 45.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.email,
                           color: Colors.grey,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            show = !show;
-                          });
+                        labelText: "Email Address"),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  TextField(
+                    controller: passwordController,
+                    obscureText: show,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Password",
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            show ? Icons.visibility_off : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              show = !show;
+                            });
+                          },
+                        )),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) =>
+                                      ForgotPasswordScreen())));
                         },
-                      )),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    ForgotPasswordScreen())));
-                      },
-                      child: Text(
-                        "Forgot Password?",
-                        style: TextStyle(fontSize: 15.sp),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 40.h,
-                ),
-                CupertinoButton(
-                  child: Text("Log In"),
-                  onPressed: () {
-                    checkValues();
-                  },
-                  color: Theme.of(context).colorScheme.secondary,
-                )
-              ],
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(fontSize: 15.sp),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  CupertinoButton(
+                    child: Text("Log In"),
+                    onPressed: () {
+                      checkValues();
+                    },
+                    color: Theme.of(context).colorScheme.secondary,
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      )),
-      bottomNavigationBar: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Don`t have an account?",
-              style: TextStyle(fontSize: 16.sp),
-            ),
-            CupertinoButton(
-                child: Text(
-                  "Sign Up",
-                  style: TextStyle(fontSize: 16.sp),
-                ),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()));
-                })
-          ],
+        )),
+        bottomNavigationBar: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Don`t have an account?",
+                style: TextStyle(fontSize: 16.sp),
+              ),
+              CupertinoButton(
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SignUpScreen()));
+                  })
+            ],
+          ),
         ),
       ),
     );

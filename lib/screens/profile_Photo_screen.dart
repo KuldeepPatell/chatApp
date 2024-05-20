@@ -8,18 +8,20 @@ class ProfilePhotoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(userName.toString()),
-      ),
-      body: SafeArea(
-        child: Container(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(userName.toString()),
+        ),
+        body: SafeArea(
           child: Container(
-            height: double.maxFinite,
-            width: double.maxFinite,
-            child: Image.network(
-              profileUrl.toString(),
-              fit: BoxFit.fitWidth,
+            child: Container(
+              height: double.maxFinite,
+              width: double.maxFinite,
+              child: Image.network(
+                profileUrl.toString(),
+                fit: BoxFit.fitWidth,
+              ),
             ),
           ),
         ),

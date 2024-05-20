@@ -146,54 +146,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text("Complete Profile"),
-      ),
-      body: SafeArea(
-          child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40.w),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 20.h,
-            ),
-            CupertinoButton(
-              onPressed: () {
-                showPhotosOptions();
-              },
-              padding: EdgeInsets.all(0),
-              child: CircleAvatar(
-                radius: 60,
-                backgroundImage:
-                    (imageFile != null) ? MemoryImage(imageFile!) : null,
-                child: (imageFile == null)
-                    ? Icon(Icons.person, size: 60.sp)
-                    : null,
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            TextField(
-              controller: fullNameController,
-              decoration: InputDecoration(labelText: "Full Name"),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            CupertinoButton(
-              child: Text("Submit"),
-              onPressed: () {
-                checkValues();
-              },
-              color: Theme.of(context).colorScheme.secondary,
-            )
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Text("Complete Profile"),
         ),
-      )),
+        body: SafeArea(
+            child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 20.h,
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  showPhotosOptions();
+                },
+                padding: EdgeInsets.all(0),
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundImage:
+                      (imageFile != null) ? MemoryImage(imageFile!) : null,
+                  child: (imageFile == null)
+                      ? Icon(Icons.person, size: 60.sp)
+                      : null,
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              TextField(
+                controller: fullNameController,
+                decoration: InputDecoration(labelText: "Full Name"),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              CupertinoButton(
+                child: Text("Submit"),
+                onPressed: () {
+                  checkValues();
+                },
+                color: Theme.of(context).colorScheme.secondary,
+              )
+            ],
+          ),
+        )),
+      ),
     );
   }
 }

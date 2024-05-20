@@ -22,6 +22,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
+  bool isEmtpy = true;
   Future<ChatRoomModel?> getChatRoomModel(UserModel targetUser) async {
     ChatRoomModel chatRoom;
     QuerySnapshot snapshot = await FirebaseFirestore.instance
@@ -59,92 +60,105 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Search"),
-      ),
-      body: SafeArea(
-          child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            TextField(
-                controller: searchController,
-                decoration: InputDecoration(labelText: "Email Address"),
-                onChanged: (value) => setState(() {})),
-            SizedBox(
-              height: 20,
-            ),
-            CupertinoButton(
-              child: Text("Search"),
-              onPressed: () {
-                setState(() {});
-              },
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("users")
-                    // .where("email", isEqualTo: searchController.text)
-                    .where("email",
-                        isGreaterThanOrEqualTo: searchController.text)
-                    .where("email", isLessThan: searchController.text + "z")
-                    .where("email", isNotEqualTo: widget.userModel.email)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    if (snapshot.hasData) {
-                      QuerySnapshot dataSnapshot =
-                          snapshot.data as QuerySnapshot;
-                      if (dataSnapshot.docs.length > 0) {
-                        Map<String, dynamic> userMap =
-                            dataSnapshot.docs[0].data() as Map<String, dynamic>;
-                        UserModel searchedUser = UserModel.fromMap(userMap);
-                        return ListTile(
-                          onTap: () async {
-                            ChatRoomModel? chatRoomModel =
-                                await getChatRoomModel(searchedUser);
-
-                            if (chatRoomModel != null) {
-                              Navigator.pop(context);
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return ChatRoomScreen(
-                                  targetUser: searchedUser,
-                                  userModel: widget.userModel,
-                                  firebaseUser: widget.firebaseUser,
-                                  chatroom: chatRoomModel,
-                                );
-                              }));
-                            }
-                          },
-                          leading: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(searchedUser.profilepic!),
-                          ),
-                          title: Text(searchedUser.fullname!),
-                          subtitle: Text(searchedUser.email!),
-                          trailing: Icon(Icons.keyboard_arrow_right),
-                        );
-                      } else {
-                        return Text("No result found!");
-                      }
-                    } else if (snapshot.hasError) {
-                      return Text("An error occured!");
-                    } else {
-                      return Text("No result found!");
-                    }
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                })
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Search"),
         ),
-      )),
+        body: SafeArea(
+            child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            children: [
+              TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(labelText: "Email Address"),
+                  onChanged: (value) => setState(() {
+                        isEmtpy = false;
+                      })),
+              SizedBox(
+                height: 20,
+              ),
+              CupertinoButton(
+                child: Text("Search"),
+                onPressed: () {
+                  setState(() {});
+                },
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              (isEmtpy)
+                  ? SizedBox()
+                  : StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("users")
+                          // .where("email", isEqualTo: searchController.text)
+                          .where("email",
+                              isGreaterThanOrEqualTo:
+                                  searchController.text.trim())
+                          .where("email",
+                              isLessThan: searchController.text.trim() + "z")
+                          .where("email", isNotEqualTo: widget.userModel.email)
+                          // .where("fullname",
+                          //     isGreaterThanOrEqualTo: searchController.text.trim())
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.active) {
+                          if (snapshot.hasData) {
+                            QuerySnapshot dataSnapshot =
+                                snapshot.data as QuerySnapshot;
+                            if (dataSnapshot.docs.length > 0) {
+                              Map<String, dynamic> userMap =
+                                  dataSnapshot.docs[0].data()
+                                      as Map<String, dynamic>;
+                              UserModel searchedUser =
+                                  UserModel.fromMap(userMap);
+                              return ListTile(
+                                onTap: () async {
+                                  ChatRoomModel? chatRoomModel =
+                                      await getChatRoomModel(searchedUser);
+
+                                  if (chatRoomModel != null) {
+                                    Navigator.pop(context);
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ChatRoomScreen(
+                                        targetUser: searchedUser,
+                                        userModel: widget.userModel,
+                                        firebaseUser: widget.firebaseUser,
+                                        chatroom: chatRoomModel,
+                                      );
+                                    }));
+                                  }
+                                },
+                                leading: CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(searchedUser.profilepic!),
+                                ),
+                                title: Text(searchedUser.fullname!),
+                                subtitle: Text(searchedUser.email!),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                              );
+                            } else {
+                              return Text("No result found!");
+                            }
+                          } else if (snapshot.hasError) {
+                            return Text("An error occured!");
+                          } else {
+                            return Text("No result found!");
+                          }
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      })
+            ],
+          ),
+        )),
+      ),
     );
   }
 }
