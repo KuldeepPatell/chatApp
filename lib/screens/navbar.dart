@@ -144,7 +144,7 @@ class NavBar extends StatelessWidget {
                     builder: (context) => AlertDialog(
                         title: Text(
                           'Want to exit',
-                          style: TextStyle(fontSize: 25.sp),
+                          style: TextStyle(fontSize: 16.sp),
                         ),
                         actions: [
                           TextButton(
@@ -152,7 +152,7 @@ class NavBar extends StatelessWidget {
                                 Navigator.pop(context);
                               },
                               child: Text('No',
-                                  style: TextStyle(fontSize: 20.sp))),
+                                  style: TextStyle(fontSize: 15.sp))),
                           TextButton(
                               onPressed: () async {
                                 await FirebaseAuth.instance.signOut();
@@ -164,7 +164,7 @@ class NavBar extends StatelessWidget {
                                 }));
                               },
                               child: Text('Yes',
-                                  style: TextStyle(fontSize: 20.sp))),
+                                  style: TextStyle(fontSize: 15.sp))),
                         ]),
                   );
                 },

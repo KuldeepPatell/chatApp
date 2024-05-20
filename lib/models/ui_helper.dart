@@ -13,8 +13,11 @@ class UIHelper {
           mainAxisSize: MainAxisSize.min,
           children: [
             CircularProgressIndicator(),
-            SizedBox(height: 30),
-            Text(title),
+            SizedBox(height: 30.h),
+            Text(
+              title,
+              style: TextStyle(fontSize: 16.sp),
+            ),
           ],
         ),
       ),
